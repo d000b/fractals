@@ -11,5 +11,5 @@ This repository contains some of the most popular fractals and my crude implemen
 - [X] Burning ship fractal
 - [X] Barnsley fern
 - [ ] Dragon curve
-- [ ] Sierpinski carpet
+- [X] Sierpinski carpet
 - [ ] Apollonian Gasket
