@@ -10,6 +10,6 @@ This repository contains some of the most popular fractals and my crude implemen
 - [X] Pythagoras tree
 - [X] Burning ship fractal
 - [X] Barnsley fern
-- [ ] Dragon curve
+- [X] Dragon curve
 - [X] Sierpinski carpet
 - [ ] Apollonian Gasket
