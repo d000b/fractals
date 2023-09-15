@@ -8,23 +8,23 @@ def initFigure():
     ax.axis('off')
     ax.set_aspect('equal')
 
-    ax.set_xlim(-25, 25)
-    ax.set_ylim(-25, 25)
+    ax.set_xlim(-20, 20)
+    ax.set_ylim(-20, 20)
 
 
     fig.patch.set_facecolor('black')
     return ax, fig
 
 
-def drawCircle(ax, c, r):
-    circle = plt.Circle(c, r, color='white', fill=False)
+def drawCircle(ax, color, c, r):
+    circle = plt.Circle(c, r, color=color, fill=False)
     ax.add_patch(circle)
 
 
-def calculateThirdCircle(C1, C2, R1, R2, R3):
-    a = R1 + R2
-    b = R1 + R3
-    c = R3 + R2
+def calculateThirdCircle(C1, r1, r2, r3):
+    a = r1 + r2
+    b = r1 + r3
+    c = r3 + r2
 
     area = calculateAreaHerons(a, b, c)
     height = calculateHeightFromArea(area, a)
@@ -47,31 +47,58 @@ def calculateThirdCenter(hip, height, point):
     return (point[0] + segment, point[1] + height)
 
 
-def descartesTheorem(R1, R2, R3):
-    denominator = R1 * R2 + R2 * R3 + R3 * R1
-    common_term = 2 * math.sqrt(R1 * R2 * R3 * (R1 + R2 + R3))
-    
-    Xinterior = R1 * R2 * R3 / (denominator + common_term)
-    Xexterior = R1 * R2 * R3 / (denominator - common_term)
-    
-    return Xinterior, abs(Xexterior)
+def descartesTheorem(k1, k2, k3):
+    k4_i = k1 + k2 + k3 + 2 * math.sqrt(k1 * k2 + k2 * k3 + k3 * k1)
+    k4_e = k1 + k2 + k3 - 2 * math.sqrt(k1 * k2 + k2 * k3 + k3 * k1)
+
+    return k4_i, k4_e
+
+def complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4):
+    z1 = C1[0] + 1j * C1[1]
+    z2 = C2[0] + 1j * C2[1]
+    z3 = C3[0] + 1j * C3[1]
+
+    z4 = (z1 * k1 + z2 * k2 + z3 * k3 + 2 * np.sqrt(k1 * k2 * z1 * z2 + k2 * k3 * z2 * z3 + k1 * k3 * z1 * z3)) / k4
+    z4_n = (z1 * k1 + z2 * k2 + z3 * k3 - 2 * np.sqrt(k1 * k2 * z1 * z2 + k2 * k3 * z2 * z3 + k1 * k3 * z1 * z3)) / k4
+    print(f"z4:{z4} z4_n: {z4_n}")
+
+    return (z4.real, z4.imag), (z4_n.real, z4_n.imag)
+
 
 
 if __name__ == "__main__":
     ax, fig = initFigure()
     
-    # Distance between A and B should make up to R1 + R2
-    # A, B = (-3, 0), (3, 0)
-    # R1, R2, R3 = 3, 3, 3
-    A, B = (-3, 0), (5, 0)
-    R1, R2, R3 = 3, 5, 3
+    # Distance between A and B should make up to r1 + r2
+    # C1, C2 = (-3, 0), (3, 0)
+    # r1, r2, r3 = 3, 3, 3
+    C1, C2 = (-3, 0), (5, 0)
+    r1, r2, r3 = 3, 5, 3
+    k1, k2, k3 = 1 / r1, 1 / r2, 1 / r3
 
-    C = calculateThirdCircle(A, B, R1, R2, R3)
+    C3 = calculateThirdCircle(C1, r1, r2, r3)
 
-    R4_i, R4_e = descartesTheorem(R1, R2, R3)
-    print(R4_i, R4_e)
+    k4_i, k4_e = descartesTheorem(k1, k2, k3)
+    r4_i, r4_e = 1 / k4_i, 1 / k4_e
 
-    drawCircle(ax, A, R1)
-    drawCircle(ax, B, R2)
-    drawCircle(ax, C, R3)
+    print(k4_i, k4_e)
+    print(1 / k4_i, 1 / k4_e)
+    print("-----")
+
+    c4_1, c4_2 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_i)
+    c4_3, c4_4 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_e)
+
+    drawCircle(ax, 'white', C1, r1)
+    drawCircle(ax, 'white', C2, r2)
+    drawCircle(ax, 'white', C3, r3)
+
+    # for internal - first solution
+    drawCircle(ax, 'pink', c4_1, r4_i)
+    drawCircle(ax, 'purple', c4_2, r4_i)
+
+    # for external -> second solution
+    drawCircle(ax, 'green', c4_3, r4_e)
+    drawCircle(ax, 'blue', c4_4, r4_e)
+
     plt.show()
+    
