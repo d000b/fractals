@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import cm
 import numpy as np
 import math
 
@@ -53,6 +54,7 @@ def descartesTheorem(k1, k2, k3):
 
     return k4_i, k4_e
 
+
 def complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4):
     z1 = C1[0] + 1j * C1[1]
     z2 = C2[0] + 1j * C2[1]
@@ -65,48 +67,49 @@ def complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4):
     return (z4.real, z4.imag), (z4_n.real, z4_n.imag)
 
 
-def apollonianGakset(ax, iterations, C1, C2, C3, r1, r2, r3):
-    print("-------------")
+def apollonianGakset(ax, cmap, color, iterations, C1, C2, C3, r1, r2, r3, internal, index):
+    if iterations == 0:
+        return
+    
     k1, k2, k3 = 1 / r1, 1 / r2, 1 / r3
     k4_i, k4_e = descartesTheorem(k1, k2, k3)
     r4_i, r4_e = 1 / k4_i, 1 / k4_e
 
     c4_1, c4_2 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_i)
     c4_3, c4_4 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_e)
+    
+    if internal:
+        drawCircle(ax, color, c4_1, r4_i)
+    else:
+        drawCircle(ax, color, c4_2, r4_i)
+    
+    # color = next(cmap)
 
-    # drawCircle(ax, 'white', C1, r1)
-    # drawCircle(ax, 'white', C2, r2)
-    # drawCircle(ax, 'white', C3, r3)
+    if index == 1:
+        apollonianGakset(ax, cmap, color, iterations - 1, C1, C2, c4_1, r1, r2, r4_i, True, index)
+        apollonianGakset(ax, cmap, color, iterations - 1, C2, C3, c4_1, r2, r3, r4_i, True, index)
+        apollonianGakset(ax, cmap, color, iterations - 1, C1, C3, c4_1, r1, r3, r4_i, False, index)
 
-    # for internal - first solution
-    drawCircle(ax, 'blue', c4_1, r4_i)
-    # drawCircle(ax, 'purple', c4_2, r4_i)
+    #2 = #5
+    if index == 2 or index == 5:
+        apollonianGakset(ax, cmap, color, iterations - 1, C1, C2, c4_1, r1, r2, r4_i, True, index)
+        apollonianGakset(ax, cmap, color, iterations - 1, C2, C3, c4_1, r2, r3, r4_i, True, index)
+        apollonianGakset(ax, cmap, color, iterations - 1, C1, C3, c4_1, r1, r3, r4_i, True, index)
 
-    # for external -> second solution
-    # drawCircle(ax, 'green', c4_3, r4_e)
-    # drawCircle(ax, 'green', c4_4, r4_e)
+    #3 = #6
+    if index == 3 or index == 6:
+        apollonianGakset(ax, cmap, color, iterations - 1, C1, C2, c4_2, r1, r2, r4_i, False, index)
+        apollonianGakset(ax, cmap, color, iterations - 1, C2, C3, c4_2, r2, r3, r4_i, False, index)
+        apollonianGakset(ax, cmap, color, iterations - 1, C1, C3, c4_2, r1, r3, r4_i, False, index)
+
+    # 4
+    if index == 4:
+        apollonianGakset(ax, cmap, color, iterations - 1, C1, C2, c4_2, r1, r2, r4_i, False, index)
+        apollonianGakset(ax, cmap, color, iterations - 1, C2, C3, c4_2, r2, r3, r4_i, True, index)
+        apollonianGakset(ax, cmap, color, iterations - 1, C1, C3, c4_2, r1, r3, r4_i, False, index)
 
 
-def apollonianGakset2(ax, iterations, C1, C2, C3, r1, r2, r3):
-    print("-------------")
-    k1, k2, k3 = 1 / r1, 1 / r2, 1 / r3
-    k4_i, k4_e = descartesTheorem(k1, k2, k3)
-    r4_i, r4_e = 1 / k4_i, 1 / k4_e
 
-    c4_1, c4_2 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_i)
-    c4_3, c4_4 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_e)
-
-    # drawCircle(ax, 'white', C1, r1)
-    # drawCircle(ax, 'white', C2, r2)
-    # drawCircle(ax, 'white', C3, r3)
-
-    # for internal - first solution
-    drawCircle(ax, 'blue', c4_2, r4_i)
-    # drawCircle(ax, 'purple', c4_2, r4_i)
-
-    # for external -> second solution
-    # drawCircle(ax, 'green', c4_3, r4_e)
-    # drawCircle(ax, 'green', c4_4, r4_e)
 
 
 if __name__ == "__main__":
@@ -126,7 +129,6 @@ if __name__ == "__main__":
 
     print(k4_i, k4_e)
     print(1 / k4_i, 1 / k4_e)
-    print("-----")
 
     c4_1, c4_2 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_i)
     c4_3, c4_4 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_e)
@@ -143,14 +145,17 @@ if __name__ == "__main__":
     # drawCircle(ax, 'green', c4_3, r4_e)
     drawCircle(ax, 'white', c4_4, r4_e)
 
+    print("-=-=-=-=-=-=-=-=-=-=-")
+    iterations = 2
+    cmap = iter(cm.rainbow(np.linspace(0, 1, iterations * 20)))
+    color = next(cmap)
+    apollonianGakset(ax, cmap, color, iterations, C1, C2, c4_1, r1, r2, r4_i, True, 1)  #1
+    apollonianGakset(ax, cmap, color, iterations, C2, C3, c4_1, r2, r3, r4_i, True, 2)  #2
+    apollonianGakset(ax, cmap, color, iterations, C1, C3, c4_1, r1, r3, r4_i, False, 3) #3
+    apollonianGakset(ax, cmap, color, iterations, C1, C2, c4_4, r1, r2, r4_e, False, 4) #4
+    apollonianGakset(ax, cmap, color, iterations, C2, C3, c4_4, r2, r3, r4_e, True, 5)  #5
+    apollonianGakset(ax, cmap, color, iterations, C1, C3, c4_4, r1, r3, r4_e, False, 6) #6
 
-    apollonianGakset(ax, 0, C1, C2, c4_1, r1, r2, r4_i)
-    apollonianGakset(ax, 0, C2, C3, c4_1, r2, r3, r4_i)
-    apollonianGakset2(ax, 0, C1, C3, c4_1, r1, r3, r4_i)
-
-    apollonianGakset2(ax, 0, C1, C2, c4_4, r1, r2, r4_e)
-    apollonianGakset(ax, 0, C2, C3, c4_4, r2, r3, r4_e) 
-    apollonianGakset2(ax, 0, C1, C3, c4_4, r1, r3, r4_e)
 
     plt.show()
     
