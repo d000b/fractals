@@ -65,6 +65,49 @@ def complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4):
     return (z4.real, z4.imag), (z4_n.real, z4_n.imag)
 
 
+def apollonianGakset(ax, iterations, C1, C2, C3, r1, r2, r3):
+    print("-------------")
+    k1, k2, k3 = 1 / r1, 1 / r2, 1 / r3
+    k4_i, k4_e = descartesTheorem(k1, k2, k3)
+    r4_i, r4_e = 1 / k4_i, 1 / k4_e
+
+    c4_1, c4_2 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_i)
+    c4_3, c4_4 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_e)
+
+    # drawCircle(ax, 'white', C1, r1)
+    # drawCircle(ax, 'white', C2, r2)
+    # drawCircle(ax, 'white', C3, r3)
+
+    # for internal - first solution
+    drawCircle(ax, 'blue', c4_1, r4_i)
+    # drawCircle(ax, 'purple', c4_2, r4_i)
+
+    # for external -> second solution
+    # drawCircle(ax, 'green', c4_3, r4_e)
+    # drawCircle(ax, 'green', c4_4, r4_e)
+
+
+def apollonianGakset2(ax, iterations, C1, C2, C3, r1, r2, r3):
+    print("-------------")
+    k1, k2, k3 = 1 / r1, 1 / r2, 1 / r3
+    k4_i, k4_e = descartesTheorem(k1, k2, k3)
+    r4_i, r4_e = 1 / k4_i, 1 / k4_e
+
+    c4_1, c4_2 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_i)
+    c4_3, c4_4 = complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4_e)
+
+    # drawCircle(ax, 'white', C1, r1)
+    # drawCircle(ax, 'white', C2, r2)
+    # drawCircle(ax, 'white', C3, r3)
+
+    # for internal - first solution
+    drawCircle(ax, 'blue', c4_2, r4_i)
+    # drawCircle(ax, 'purple', c4_2, r4_i)
+
+    # for external -> second solution
+    # drawCircle(ax, 'green', c4_3, r4_e)
+    # drawCircle(ax, 'green', c4_4, r4_e)
+
 
 if __name__ == "__main__":
     ax, fig = initFigure()
@@ -93,12 +136,21 @@ if __name__ == "__main__":
     drawCircle(ax, 'white', C3, r3)
 
     # for internal - first solution
-    drawCircle(ax, 'pink', c4_1, r4_i)
-    drawCircle(ax, 'purple', c4_2, r4_i)
+    drawCircle(ax, 'white', c4_1, r4_i)
+    # drawCircle(ax, 'purple', c4_2, r4_i)
 
     # for external -> second solution
-    drawCircle(ax, 'green', c4_3, r4_e)
-    drawCircle(ax, 'blue', c4_4, r4_e)
+    # drawCircle(ax, 'green', c4_3, r4_e)
+    drawCircle(ax, 'white', c4_4, r4_e)
+
+
+    apollonianGakset(ax, 0, C1, C2, c4_1, r1, r2, r4_i)
+    apollonianGakset(ax, 0, C2, C3, c4_1, r2, r3, r4_i)
+    apollonianGakset2(ax, 0, C1, C3, c4_1, r1, r3, r4_i)
+
+    apollonianGakset2(ax, 0, C1, C2, c4_4, r1, r2, r4_e)
+    apollonianGakset(ax, 0, C2, C3, c4_4, r2, r3, r4_e) 
+    apollonianGakset2(ax, 0, C1, C3, c4_4, r1, r3, r4_e)
 
     plt.show()
     
