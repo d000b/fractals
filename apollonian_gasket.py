@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import cm
 import numpy as np
 import math
 
@@ -67,7 +66,7 @@ def complexDescartesTheorem(C1, C2, C3, k1, k2, k3, k4):
     return (z4.real, z4.imag), (z4_n.real, z4_n.imag)
 
 
-def apollonianGakset(ax, cmap, color, iterations, C1, C2, C3, r1, r2, r3, internal, index):
+def apollonianGasket(ax, color, iterations, C1, C2, C3, r1, r2, r3, internal, index):
     if iterations == 0:
         return
     
@@ -83,33 +82,29 @@ def apollonianGakset(ax, cmap, color, iterations, C1, C2, C3, r1, r2, r3, intern
     else:
         drawCircle(ax, color, c4_2, r4_i)
     
-    # color = next(cmap)
 
     if index == 1:
-        apollonianGakset(ax, cmap, color, iterations - 1, C1, C2, c4_1, r1, r2, r4_i, True, index)
-        apollonianGakset(ax, cmap, color, iterations - 1, C2, C3, c4_1, r2, r3, r4_i, True, index)
-        apollonianGakset(ax, cmap, color, iterations - 1, C1, C3, c4_1, r1, r3, r4_i, False, index)
+        apollonianGasket(ax, "red", iterations - 1, C1, C2, c4_1, r1, r2, r4_i, True, index)
+        apollonianGasket(ax, "red", iterations - 1, C2, C3, c4_1, r2, r3, r4_i, True, index)
+        apollonianGasket(ax, "red", iterations - 1, C1, C3, c4_1, r1, r3, r4_i, False, index)
 
     #2 = #5
     if index == 2 or index == 5:
-        apollonianGakset(ax, cmap, color, iterations - 1, C1, C2, c4_1, r1, r2, r4_i, True, index)
-        apollonianGakset(ax, cmap, color, iterations - 1, C2, C3, c4_1, r2, r3, r4_i, True, index)
-        apollonianGakset(ax, cmap, color, iterations - 1, C1, C3, c4_1, r1, r3, r4_i, True, index)
+        apollonianGasket(ax, "green", iterations - 1, C1, C2, c4_1, r1, r2, r4_i, True, index)
+        apollonianGasket(ax, "green", iterations - 1, C2, C3, c4_1, r2, r3, r4_i, True, index)
+        apollonianGasket(ax, "green", iterations - 1, C1, C3, c4_1, r1, r3, r4_i, True, index)
 
     #3 = #6
     if index == 3 or index == 6:
-        apollonianGakset(ax, cmap, color, iterations - 1, C1, C2, c4_2, r1, r2, r4_i, False, index)
-        apollonianGakset(ax, cmap, color, iterations - 1, C2, C3, c4_2, r2, r3, r4_i, False, index)
-        apollonianGakset(ax, cmap, color, iterations - 1, C1, C3, c4_2, r1, r3, r4_i, False, index)
+        apollonianGasket(ax, "blue", iterations - 1, C1, C2, c4_2, r1, r2, r4_i, False, index)
+        apollonianGasket(ax, "blue", iterations - 1, C2, C3, c4_2, r2, r3, r4_i, False, index)
+        apollonianGasket(ax, "blue", iterations - 1, C1, C3, c4_2, r1, r3, r4_i, False, index)
 
     # 4
     if index == 4:
-        apollonianGakset(ax, cmap, color, iterations - 1, C1, C2, c4_2, r1, r2, r4_i, False, index)
-        apollonianGakset(ax, cmap, color, iterations - 1, C2, C3, c4_2, r2, r3, r4_i, True, index)
-        apollonianGakset(ax, cmap, color, iterations - 1, C1, C3, c4_2, r1, r3, r4_i, False, index)
-
-
-
+        apollonianGasket(ax, "purple", iterations - 1, C1, C2, c4_2, r1, r2, r4_i, False, index)
+        apollonianGasket(ax, "purple", iterations - 1, C2, C3, c4_2, r2, r3, r4_i, True, index)
+        apollonianGasket(ax, "purple", iterations - 1, C1, C3, c4_2, r1, r3, r4_i, False, index)
 
 
 if __name__ == "__main__":
@@ -147,14 +142,12 @@ if __name__ == "__main__":
 
     print("-=-=-=-=-=-=-=-=-=-=-")
     iterations = 2
-    cmap = iter(cm.rainbow(np.linspace(0, 1, iterations * 20)))
-    color = next(cmap)
-    apollonianGakset(ax, cmap, color, iterations, C1, C2, c4_1, r1, r2, r4_i, True, 1)  #1
-    apollonianGakset(ax, cmap, color, iterations, C2, C3, c4_1, r2, r3, r4_i, True, 2)  #2
-    apollonianGakset(ax, cmap, color, iterations, C1, C3, c4_1, r1, r3, r4_i, False, 3) #3
-    apollonianGakset(ax, cmap, color, iterations, C1, C2, c4_4, r1, r2, r4_e, False, 4) #4
-    apollonianGakset(ax, cmap, color, iterations, C2, C3, c4_4, r2, r3, r4_e, True, 5)  #5
-    apollonianGakset(ax, cmap, color, iterations, C1, C3, c4_4, r1, r3, r4_e, False, 6) #6
+    apollonianGasket(ax, "white", iterations, C1, C2, c4_1, r1, r2, r4_i, True, 1)  #1
+    apollonianGasket(ax, "white", iterations, C2, C3, c4_1, r2, r3, r4_i, True, 2)  #2
+    apollonianGasket(ax, "white", iterations, C1, C3, c4_1, r1, r3, r4_i, False, 3) #3
+    apollonianGasket(ax, "white", iterations, C1, C2, c4_4, r1, r2, r4_e, False, 4) #4
+    apollonianGasket(ax, "white", iterations, C2, C3, c4_4, r2, r3, r4_e, True, 5)  #5
+    apollonianGasket(ax, "white", iterations, C1, C3, c4_4, r1, r3, r4_e, False, 6) #6
 
 
     plt.show()
