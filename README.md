@@ -12,4 +12,4 @@ This repository contains some of the most popular fractals and my crude implemen
 - [X] Barnsley fern
 - [X] Dragon curve
 - [X] Sierpinski carpet
-- [ ] Apollonian Gasket
+- [X] Apollonian Gasket
