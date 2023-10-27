@@ -14,7 +14,7 @@ This repository contains some of the most popular fractals and my crude implemen
 - [X] Dragon curve
 - [X] Sierpinski carpet
 - [X] Apollonian Gasket
-- [ ] Devil's staircase
+- [X] Devil's staircase
 
 
 ---
@@ -71,4 +71,9 @@ This repository contains some of the most popular fractals and my crude implemen
 ### Apollonian gasket
 <p align="center">
     <img src="images/apol1_white.jpeg" alt="apol" width = 500px/>
+<p>
+
+### Devil's staircase
+<p align="center">
+    <img src="images/devils_staircase.jpg" alt="devils" width = 500px/>
 <p>
